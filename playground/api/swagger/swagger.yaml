@@ -1,16 +1,22 @@
 swagger: "2.0"
 info:
   version: "0.0.1"
-  title: Hello World App
+  title: API Design
+  description: These are where ALL Api's will be designed s before developers develop the backend functionality
+  termsOfService: There API are definitions only. Some may have some test backend code but this is the playground for designing the interfaces
 # during dev, should point to your local machine
-host: localhost:10010
+host: node4.codenvy.io:34096
 # basePath prefixes all resource paths 
 basePath: /
 # 
+tags:
+  - name: Hello
+    description: World example
+  - name: Assignment
+    description: Assignments for Learners
 schemes:
   # tip: remove http to make production-grade
   - http
-  - https
 # format of bodies a client can send (Content-Type)
 consumes:
   - application/json
@@ -22,7 +28,9 @@ paths:
     # binds a127 app logic to a route
     x-swagger-router-controller: hello_world
     get:
-      description: Returns 'Hello' to the caller
+      tags: 
+        - Hello
+      description: Returns 'Hello' to the caller - hello
       # used as the method name of the controller
       operationId: hello
       parameters:
@@ -42,6 +50,20 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /assign:
+    x-swagger-router-controller: assign
+    get:
+      tags:
+        - Assignment
+      responses:
+        "200":
+          description: Success
+          schema:
+            required:
+              - message
+            properties:
+              message:
+                type: string
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
