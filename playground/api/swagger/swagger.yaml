@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: "0.0.1"
-  title: API Design
+  title: API Design 1
   description: These are where ALL Api's will be designed s before developers develop the backend functionality
   termsOfService: There API are definitions only. Some may have some test backend code but this is the playground for designing the interfaces
 # during dev, should point to your local machine

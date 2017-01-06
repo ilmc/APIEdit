@@ -13,6 +13,7 @@
 var util = require('util');
 var NodeCache = require("node-cache");
 var myKeys = new NodeCache();
+var rand = require("random-key");
 
 /*
  Once you 'require' a module you can reference the things that it exports.  These are defined in module.exports.
@@ -38,30 +39,26 @@ module.exports = {
   Param 2: a handle to the response object
  */
 function create(req, res) {
-  // variables defined in the Swagger document can be referenced using req.swagger.params.{parameter_name}
   var body = req.swagger.params.body.value || 'stranger';
-  /*var hello = util.format('Assignment Created'); */
-
-  var rand = require("random-key");
 
   var secret = rand.generateBase30(8); /* 8 human readable chars */
+  body["secret"] = secret;
+  var d = new Date();
+  var n = d.toUTCString();
+  body["created"] = n;
+  body["status"] = 'NOT_STARTED';
 
-  
   myKeys.set( secret, body, function( err, success ) {
     if ( !err && success ) {
       console.log( "Success setting key " + secret)
     }
   });
 
-  // this sends back a JSON response which is a single string
   res.json(secret);
 }
 
 function retrieve(req, res) {
-
   var myKey = req.swagger.params.secret.value;
-
-
   var assignment = myKeys.get( myKey );
 
   if ( assignment == undefined ){
