@@ -5,7 +5,7 @@ info:
   description: These are where ALL Api's will be designed s before developers develop the backend functionality
   termsOfService: There API are definitions only. Some may have some test backend code but this is the playground for designing the interfaces
 # during dev, should point to your local machine
-host: node4.codenvy.io:34096
+host: apiedit.ilmc.co.uk:8081
 # basePath prefixes all resource paths 
 basePath: /
 # 
@@ -52,10 +52,20 @@ paths:
             $ref: "#/definitions/ErrorResponse"
   /assign:
     x-swagger-router-controller: assign
-    get:
+    post:
       tags:
         - Assignment
+      operationId: create
+      parameters:
+        - name: body
+          in: body
+          required: true
+          description: Assignment details
+          schema:
+            $ref: "#/definitions/NewAssignment"
       responses:
+        "404":
+          description: Assignment not found
         "200":
           description: Success
           schema:
@@ -64,6 +74,25 @@ paths:
             properties:
               message:
                 type: string
+  /assign/{secret}:
+    x-swagger-router-controller: assign
+    get:
+      tags:
+        - Assignment
+      operationId: retrieve
+      parameters:
+        - name: secret
+          in: path
+          required: true
+          description: The secret key to to the assignment
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            properties:
+              assignment:
+                type: object
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
@@ -80,3 +109,17 @@ definitions:
     properties:
       message:
         type: string
+  NewAssignment:
+    type: object
+    required:
+      - assignment
+      - organisationid
+    properties:
+      assignment:
+        type: object
+      assigneeid:
+        type: string
+        default: "User1"
+      organisationid:
+        type: string
+        default: "Org1"
